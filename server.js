@@ -24,7 +24,24 @@ function getCarOwners() {
       throw resp.error;
     });
 }
-
+function getCarsWithOwners() {
+  return Promise.try(() => {
+    return req({
+      uri: "http://users:3000/api/users",
+      json: true
+    });
+  }).then(users => {
+    output = [];
+    for (let i = 0; i < cars.length; i++) {
+      output[i] = {
+        ...cars[i],
+        user: users[cars[i].userId]
+      };
+    }
+    console.log("output", output);
+    return output;
+  });
+}
 function getCarOwner(id) {
   return Promise.try(() => {
     return req({
@@ -75,7 +92,21 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/cars", (req, res) => {
-  res.send(cars);
+  const GET_USERS = _.get(req.query, "embedded", false);
+  console.log("GET_USERS", GET_USERS);
+  if (GET_USERS && GET_USERS === "owners") {
+    getCarsWithOwners().then(response => {
+      if (!response.length) {
+        console.log("problem");
+        res.send({ cars, msg: "whoops a problem occured" });
+      } else {
+        console.log("all good");
+        res.send(response);
+      }
+    });
+  } else {
+    res.send(cars);
+  }
 });
 
 app.get("/api/users", (req, res) => {
