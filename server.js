@@ -30,17 +30,19 @@ function getCarsWithOwners() {
       uri: "http://users:3000/api/users",
       json: true
     });
-  }).then(users => {
-    output = [];
-    for (let i = 0; i < cars.length; i++) {
-      output[i] = {
-        ...cars[i],
-        user: users[cars[i].userId]
-      };
-    }
-    console.log("output", output);
-    return output;
-  });
+  })
+    .then(users => {
+      output = [];
+      for (let i = 0; i < cars.length; i++) {
+        output[i] = {
+          ...cars[i],
+          user: users[cars[i].userId]
+        };
+      }
+      console.log("output", output);
+      return output;
+    })
+    .catch(e => []);
 }
 function getCarOwner(id) {
   return Promise.try(() => {
