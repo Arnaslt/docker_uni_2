@@ -26,15 +26,18 @@ Post new user through my service
 // name : string
 // bought: bool
 // price: int
-//userId: int
+// userId: int
 
+/soap
+this gets all cars
 <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+
   <Body>
 	<CarsRequest xmlns="http://www.examples.com/wsdl/myAwesesomeService.wsdl">
 	</CarsRequest>
   </Body>
 </Envelope>
-
+this changes car user
 <Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
   <Body>
 	<carChangeOwnerRequest xmlns="http://www.examples.com/wsdl/myAwesesomeService.wsdl">
@@ -43,3 +46,6 @@ Post new user through my service
 	</carChangeOwnerRequest>
   </Body>
 </Envelope>
+
+/wsdl
+get wsdl file

@@ -4,6 +4,8 @@ const app = express();
 const Promise = require("bluebird");
 const _ = require("lodash");
 const soapRoutes = require("./soapLogic.js");
+const fs = require("fs");
+const path = require("path");
 
 const {
   createUser,
@@ -24,6 +26,10 @@ const cars = [
 // Helpers end here
 app.get("/", (req, res) => {
   res.send("listening to port 3000");
+});
+
+app.get("/wsdl", (req, res) => {
+  res.download("./doStuff.wsdl", "wsdl.wsdl");
 });
 
 app.get("/api/cars", (req, res) => {
