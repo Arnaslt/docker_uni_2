@@ -30,6 +30,20 @@ function soapRouter(app) {
             .catch(err => {
               cb({ result: err.message });
             });
+        },
+        createUser: function(args, cb) {
+          const balance = args.balance;
+          const first_name = args.first_name;
+          commWrapper
+            .createUser(balance, first_name)
+            .then(() => {
+              cb({
+                result: `Car Owner of balance ${balance} is now ${first_name} created`
+              });
+            })
+            .catch(err => {
+              cb({ result: err.message });
+            });
         }
       }
     }

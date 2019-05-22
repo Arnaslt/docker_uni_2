@@ -4,7 +4,7 @@
 
 docker-compose build && docker-compose up
 
-##api running on localhost:3000 (or shops)
+## api running on localhost:3000 (or cars)
 
 // get , put , delete , post, patch
 to //cars:id
@@ -21,7 +21,6 @@ buys car for that user
 
 Post new user through my service
 /api/users
-
 // fields
 // name : string
 // bought: bool
@@ -47,5 +46,14 @@ this changes car user
   </Body>
 </Envelope>
 
+<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+  <Body>
+	<createUserRequest xmlns="http://www.examples.com/wsdl/myAwesesomeService.wsdl">
+		<balance>11111</balance>
+		<first_name>31111</first_name>
+	</createUserRequest>
+  </Body>
+</Envelope>
+
 /wsdl
-get wsdl file
+get wsdl file (wsdl.wsdl)

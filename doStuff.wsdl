@@ -31,6 +31,13 @@
                 </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="createUser">
+                <xs:complexType>
+                <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="unbounded" name="result" type="xs:string"/>
+                </xs:sequence>
+                </xs:complexType>
+            </xs:element>
         </xs:schema>
     </wsdl:types>
 
@@ -49,6 +56,14 @@
     <wsdl:message name="carChangeOwnerResponse">
         <wsdl:part name="parameters" element="tns:changeOwnerResp"/>
     </wsdl:message>
+    <wsdl:message name="createUserRequest">
+        <wsdl:part name="balance" type="xs:integer"/>
+        <wsdl:part name="first_name" type="xs:string"/>
+    </wsdl:message>
+
+    <wsdl:message name="createUserResponse">
+        <wsdl:part name="parameters" element="tns:createUserResp"/>
+    </wsdl:message>
 
     <wsdl:portType name="CommunicatorPort">
         <wsdl:operation name="getCars">
@@ -58,6 +73,10 @@
         <wsdl:operation name="carChangeOwner">
             <wsdl:input message="tns:carChangeOwnerRequest" />
             <wsdl:output message="tns:carChangeOwnerResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="createUser">
+            <wsdl:input message="tns:createUserRequest" />
+            <wsdl:output message="tns:createUserResponse" />
         </wsdl:operation>
     </wsdl:portType>
 
@@ -74,6 +93,15 @@
         </wsdl:operation>
         <wsdl:operation name="carChangeOwner">
             <soap:operation soapAction="carChangeOwner" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createUser">
+            <soap:operation soapAction="createUser" style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>

@@ -14,3 +14,13 @@
 	</carChangeOwnerRequest>
   </Body>
 </Envelope>
+
+
+<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+  <Body>
+	<createUserRequest xmlns="http://www.examples.com/wsdl/myAwesesomeService.wsdl">
+		<balance>11111</balance>
+		<first_name>31111</first_name>
+	</createUserRequest>
+  </Body>
+</Envelope>

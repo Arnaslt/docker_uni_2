@@ -11,7 +11,8 @@ const {
   createUser,
   getCarOwner,
   getCarsWithOwners,
-  getCarOwners
+  getCarOwners,
+  getIPAddress
 } = require("./utils");
 
 const SOAP_PATH = "/soap";
@@ -28,8 +29,14 @@ app.get("/", (req, res) => {
   res.send("listening to port 3000");
 });
 
-app.get("/wsdl", (req, res) => {
-  res.download("./doStuff.wsdl", "wsdl.wsdl");
+app.get("/wsdl", function(req, res, next) {
+  getIPAddress(function(err, ip) {
+    const xml = fs.readFileSync("./doStuff.wsdl", "utf8");
+    var xmlnewip = xml.replace(new RegExp("localhost:80", "g"), ip);
+    res.set("Content-Type", "text/xml");
+    console.log(xmlnewip);
+    res.end(xmlnewip);
+  });
 });
 
 app.get("/api/cars", (req, res) => {
