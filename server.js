@@ -1,96 +1,42 @@
 const express = require("express");
 const Joi = require("joi");
 const app = express();
-const req = require("request-promise");
 const Promise = require("bluebird");
 const _ = require("lodash");
+const soapRoutes = require("./soapLogic.js");
+const fs = require("fs");
+const path = require("path");
+
+const {
+  createUser,
+  getCarOwner,
+  getCarsWithOwners,
+  getCarOwners,
+  getIPAddress
+} = require("./utils");
+
+const SOAP_PATH = "/soap";
 
 app.use(express.json());
 
-function getCarOwners() {
-  return Promise.try(() => {
-    return req({
-      uri: "http://users:3000/api/users",
-      json: true
-    });
-  })
-    .then(body => {
-      console.log("received resp");
-      console.dir(body);
-      if (body.error) throw new Error(body.message);
-      return body;
-    })
-    .catch(function(resp) {
-      throw resp.error;
-    });
-}
-function getCarsWithOwners() {
-  return Promise.try(() => {
-    return req({
-      uri: "http://users:3000/api/users",
-      json: true
-    });
-  })
-    .then(users => {
-      output = [];
-      for (let i = 0; i < cars.length; i++) {
-        output[i] = {
-          ...cars[i],
-          user: users[cars[i].userId]
-        };
-      }
-      console.log("output", output);
-      return output;
-    })
-    .catch(e => []);
-}
-function getCarOwner(id) {
-  return Promise.try(() => {
-    return req({
-      uri: "http://users:3000/api/users/" + id,
-      json: true
-    });
-  })
-    .then(body => {
-      console.log("received resp");
-      console.dir(body);
-      if (body.error) throw new Error(body.message);
-      return body;
-    })
-    .catch(function(resp) {
-      throw resp.error;
-    });
-}
-function createUser(balance, first_name) {
-  return Promise.try(() => {
-    return req({
-      uri: "http://users:3000/api/users/",
-      json: true,
-      method: "POST",
-      body: {
-        balance,
-        first_name
-      }
-    });
-  })
-    .then(body => {
-      console.log("received resp");
-      console.dir(body);
-      if (body.error) throw new Error(body.message);
-      return body;
-    })
-    .catch(function(resp) {
-      throw resp.error;
-    });
-}
 const cars = [
   { id: 1, name: "bmw e90", bought: true, price: 100, userId: 1 },
   { id: 2, name: "mazda miyata", bought: false, price: 95, userId: 2 },
   { id: 3, name: "mitsubishi lancer", bought: true, price: 70, userId: 3 }
 ];
-
+// Helpers end here
 app.get("/", (req, res) => {
   res.send("listening to port 3000");
+});
+
+app.get("/wsdl", function(req, res, next) {
+  getIPAddress(function(err, ip) {
+    const xml = fs.readFileSync("./doStuff.wsdl", "utf8");
+    var xmlnewip = xml.replace(new RegExp("localhost:80", "g"), ip);
+    res.set("Content-Type", "text/xml");
+    console.log(xmlnewip);
+    res.end(xmlnewip);
+  });
 });
 
 app.get("/api/cars", (req, res) => {
@@ -261,7 +207,13 @@ app.use("/api/*", (req, res) => {
 });
 const port = 3001;
 
-app.listen(port, () => console.log(`Listening ... on port 3001`));
+app.listen(port, () => {
+  // soap.listen(app, SOAP_PATH, service, wsdl, function() {
+  //   console.log("server initialized");
+  //   console.log(`Listening ... on port 3001`);
+  // });
+  soapRoutes(app);
+});
 
 function validateCar(car) {
   const schema = {
@@ -288,10 +240,10 @@ function validateCarPut(car) {
   return Joi.validate(car, schema);
 }
 
-function validateCarByt(buyAction) {
-  const schema = {
-    carId: Joi.number().required(),
-    userId: Joi.number().required()
-  };
-  return Joi.validate(car, buyAction);
-}
+// function validateCarByt(buyAction) {
+//   const schema = {
+//     carId: Joi.number().required(),
+//     userId: Joi.number().required()
+//   };
+//   return Joi.validate(car, buyAction);
+// }
