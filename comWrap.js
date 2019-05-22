@@ -1,7 +1,15 @@
-const { getAllCars, changeCarOwner, createUser } = require("./utils");
+const {
+  getAllCars,
+  changeCarOwner,
+  createUser,
+  getCarOwners
+} = require("./utils");
 class CommunicateWrapper {
   getCars() {
     return getAllCars();
+  }
+  getUsers() {
+    return getCarOwners();
   }
   carChangeOwner(itemId, userId) {
     return changeCarOwner(userId, itemId);

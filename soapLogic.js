@@ -44,6 +44,12 @@ function soapRouter(app) {
             .catch(err => {
               cb({ result: err.message });
             });
+        },
+        getUsers: async function(args) {
+          console.log("try to get users");
+          const output = await commWrapper.getUsers();
+          console.log("getting users", output);
+          return output;
         }
       }
     }
