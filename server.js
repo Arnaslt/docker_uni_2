@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
 
 app.get("/wsdl", function(req, res, next) {
   getIPAddress(function(err, ip) {
-    const xml = fs.readFileSync("./doStuff.wsdl", "utf8");
+    const xml = fs.readFileSync("./doAwesomeStuff.wsdl", "utf8");
     var xmlnewip = xml.replace(
       new RegExp("localhost:80", "g"),
       req.headers.host

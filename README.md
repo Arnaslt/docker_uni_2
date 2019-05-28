@@ -33,7 +33,9 @@ this gets all cars
 
   <Body>
 	<CarsRequest xmlns="http://www.examples.com/wsdl/myAwesesomeService.wsdl">
-	</CarsRequest>
+
+    </CarsRequest>
+
   </Body>
 </Envelope>
 this changes car user
@@ -56,4 +58,4 @@ this changes car user
 </Envelope>
 
 /wsdl
-get wsdl file (wsdl.wsdl)
+get wsdl file (wsdl.wsdl)s
