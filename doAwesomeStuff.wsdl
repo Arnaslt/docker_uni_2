@@ -1,0 +1,165 @@
+<wsdl:definitions name="CommunicatorService" targetNamespace="http://tempuri.org/" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:tns="http://tempuri.org/"
+           xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+           xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:types>
+
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+            <xs:element name="ItemsRequest">
+            </xs:element>
+            <xs:element name="UsersGetRequest">
+            </xs:element>
+            <xs:element name="UserSpecificGetRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="1" maxOccurs="1" name="balance" type="xs:integer"/>
+                        <xs:element minOccurs="1" maxOccurs="1" name="first_name" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="User">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="id" type="xs:int" />
+                        <xs:element name="first_name" type="xs:string" />
+                        <xs:element name="balance" type="xs:float" />
+                        <xs:element name="items" element="tns:ItemArray" />
+                    </xs:all>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="UserArray">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" maxOccurs="unbounded" name="User" nillable="true" element="tns:User"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ItemsBuyRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="1" maxOccurs="1" name="userId" type="xs:integer"/>
+                        <xs:element minOccurs="1" maxOccurs="1" name="itemId" type="xs:integer"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Item">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="id" type="xs:int" />
+                        <xs:element name="name" type="xs:string" />
+                        <xs:element name="price" type="xs:float" />
+                        <xs:element name="bought" type="xs:boolean" />
+                    </xs:all>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ItemArray">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" maxOccurs="unbounded" name="Item" nillable="true" element="tns:Item"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="BuyResp">
+                <xs:complexType>
+                <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="unbounded" name="result" type="xs:string"/>
+                </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+
+    <wsdl:message name="UserSpecificGetRequest">
+        <wsdl:part name="parameters" element="tns:UserSpecificGetRequest"/>
+    </wsdl:message>
+    <wsdl:message name="UserSpecificGetResponse">
+        <wsdl:part name="parameters" element="tns:User"/>
+    </wsdl:message>
+    <wsdl:message name="UsersGetRequest">
+        <wsdl:part name="parameters" element="tns:UsersGetRequest"/>
+    </wsdl:message>
+    <wsdl:message name="UsersGetResponse">
+        <wsdl:part name="parameters" element="tns:UserArray"/>
+    </wsdl:message>
+    <wsdl:message name="ItemsRequest">
+        <wsdl:part name="parameters" element="tns:ItemsRequest"/>
+    </wsdl:message>
+    <wsdl:message name="ItemsResponse">
+        <wsdl:part name="parameters" element="tns:ItemArray"/>
+    </wsdl:message>
+
+    <wsdl:message name="ItemsBuyRequest">
+        <wsdl:part name="parameters" element="tns:ItemsBuyRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="ItemsBuyResponse">
+        <wsdl:part name="parameters" element="tns:BuyResp"/>
+    </wsdl:message>
+
+    <wsdl:portType name="CommunicatorPort">
+        <wsdl:operation name="createUser">
+            <wsdl:input message="tns:UserSpecificGetRequest" />
+            <wsdl:output message="tns:UserSpecificGetResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="getUsers">
+            <wsdl:input message="tns:UsersGetRequest" />
+            <wsdl:output message="tns:UsersGetResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="getCars">
+            <wsdl:input message="tns:ItemsRequest" />
+            <wsdl:output message="tns:ItemsResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="buyCar">
+            <wsdl:input message="tns:ItemsBuyRequest" />
+            <wsdl:output message="tns:ItemsBuyResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="CommunicatorBinding" type="tns:CommunicatorPort">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getCars">
+            <soap:operation soapAction="getCars" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="buyCar">
+            <soap:operation soapAction="buyCar" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createUser">
+            <soap:operation soapAction="createUser" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getUsers">
+            <soap:operation soapAction="getUsers" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="CommunicatorService">
+        <wsdl:port name="CommunicatorPort" binding="tns:CommunicatorBinding">
+            <soap:address location="http://localhost:80/soap"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>
