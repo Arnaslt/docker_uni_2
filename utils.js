@@ -19,6 +19,49 @@ function getAllCars() {
       throw resp.error;
     });
 }
+function getAllCarsAndOwners() {
+  return Promise.try(() => {
+    return req({
+      uri: "http://cars:3001/api/cars",
+      json: true
+    });
+  })
+    .then(body => {
+      console.log("received resp from get all cars");
+      console.dir(body);
+      if (body.error) throw new Error(body.message);
+      return body;
+    })
+    .catch(function(resp) {
+      console.log("the erroe was", resp);
+      throw resp.error;
+    });
+}
+function getCarsWithOwners() {
+  return Promise.try(() => {
+    return req({
+      uri: "http://users:3000/api/users",
+      json: true
+    });
+  })
+    .then(async users => {
+      output = [];
+      const cars = await req({
+        uri: "http://cars:3001/api/cars",
+        json: true
+      });
+      console.log("cars are", cars);
+      for (let i = 0; i < cars.length; i++) {
+        output[i] = {
+          ...cars[i],
+          user: users[cars[i].userId]
+        };
+      }
+      console.log("output", output);
+      return output;
+    })
+    .catch(e => []);
+}
 function changeCarOwner(userId, carId) {
   return Promise.try(() => {
     return req({
@@ -57,26 +100,6 @@ function getCarOwners() {
     .catch(function(resp) {
       throw resp.error;
     });
-}
-function getCarsWithOwners() {
-  return Promise.try(() => {
-    return req({
-      uri: "http://users:3000/api/users",
-      json: true
-    });
-  })
-    .then(users => {
-      output = [];
-      for (let i = 0; i < cars.length; i++) {
-        output[i] = {
-          ...cars[i],
-          user: users[cars[i].userId]
-        };
-      }
-      console.log("output", output);
-      return output;
-    })
-    .catch(e => []);
 }
 function getCarOwner(id) {
   return Promise.try(() => {

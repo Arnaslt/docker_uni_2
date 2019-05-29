@@ -1,12 +1,14 @@
 const {
   getAllCars,
+  getCarsWithOwners,
   changeCarOwner,
   createUser,
   getCarOwners
 } = require("./utils");
 class CommunicateWrapper {
   getCars() {
-    return getAllCars();
+    return getCarsWithOwners();
+    // return getAllCars();
   }
   getUsers() {
     return getCarOwners();
